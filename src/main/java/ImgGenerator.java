@@ -7,10 +7,12 @@ import java.net.URL;
 public class ImgGenerator {
     private static final String yuml = "https://yuml.me/diagram/scruffy/class/";  //URL of yuml
     private static String img_location = "src/test/output.png";
+    private static String code = "";
 
-    public ImgGenerator(){
+    public ImgGenerator(String code){
+        this.code = code;
         try{
-            URL url = new URL(yuml + "[A%7C-x:int;-y:int(*)]1-0..*[B],[A]-1[C],[A]-*[D]" + ".png");
+            URL url = new URL(yuml + code + ".png");
             InputStream in = url.openStream();
             OutputStream out = new FileOutputStream(img_location);
             byte[] buffer = new byte[2048];

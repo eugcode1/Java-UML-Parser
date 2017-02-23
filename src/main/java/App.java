@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        ImgGenerator sample = new ImgGenerator();
+
         // creates an input stream for the file to be parsed
         FileInputStream in = new FileInputStream("src/test/java/Hello1.java");
 
@@ -15,10 +15,14 @@ public class App {
         CompilationUnit cu = JavaParser.parse(in);
 
         // prints the resulting compilation unit to default system output
-        //System.out.println(cu.toString());
+        System.out.println(cu.toString());
 
         // visit and print the methods names
         new MethodVisitor().visit(cu, null);
+
+        //Diagram generator
+        String code = "\"[A%7C-x:int;-y:int(*)]1-0..*[B],[A]-1[C],[A]-*[D]\"";
+        ImgGenerator sample = new ImgGenerator(code);
     }
     private static class MethodVisitor extends VoidVisitorAdapter<Void> {
         @Override
