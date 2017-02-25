@@ -3,11 +3,24 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.io.File;
 import java.io.FileInputStream;
 
 public class App {
+    //setup the file path
+    private static String filePath;
+    private static File fileFolder;
+    private static File[] fileList;
+    private static StringBuilder umlURL = new StringBuilder();
     public static void main(String[] args) throws Exception {
 
+        filePath = "src/test/java/uml-parser-test-1";
+        fileFolder = new File(filePath);
+        fileList = fileFolder.listFiles();
+        String outputFile = "test1.png";
+        App obj = new App();
+
+        /*
         // creates an input stream for the file to be parsed
         FileInputStream in = new FileInputStream("src/test/java/Hello1.java");
 
@@ -19,10 +32,11 @@ public class App {
 
         // visit and print the methods names
         new MethodVisitor().visit(cu, null);
-
+        */
         //Diagram generator
-        String code = "\"[A%7C-x:int;-y:int(*)]1-0..*[B],[A]-1[C],[A]-*[D]\"";
-        ImgGenerator sample = new ImgGenerator(code);
+        umlURL.append("\"[A%7C-x:int;-y:int(*)]1-0..*[B],[A]-1[C],[A]-*[D]\"");
+        ImgGenerator sample = new ImgGenerator(umlURL.toString());
+        System.exit(1);
     }
     private static class MethodVisitor extends VoidVisitorAdapter<Void> {
         @Override
