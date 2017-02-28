@@ -12,14 +12,15 @@ public class App {
     private static File fileFolder;
     private static File[] fileList;
     private static StringBuilder umlURL = new StringBuilder();
+    private static String outputFile;
     public static void main(String[] args) throws Exception {
 
         filePath = "src/test/java/uml-parser-test-1";
         fileFolder = new File(filePath);
         fileList = fileFolder.listFiles();
-        String outputFile = "test1.png";
+        outputFile = "test1.png";
         App obj = new App();
-
+        obj.parse();
         /*
         // creates an input stream for the file to be parsed
         FileInputStream in = new FileInputStream("src/test/java/Hello1.java");
@@ -38,6 +39,13 @@ public class App {
         ImgGenerator sample = new ImgGenerator(umlURL.toString());
         System.exit(1);
     }
+    public void parse(){
+        for(File file:fileList){
+            if(file.isFile()){
+                System.out.println(file.getName());
+            }
+        }
+    };
     private static class MethodVisitor extends VoidVisitorAdapter<Void> {
         @Override
         public void visit(MethodDeclaration n, Void arg) {
