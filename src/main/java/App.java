@@ -14,21 +14,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         umlParser obj = new umlParser();
         obj.parse();
-/*
-        // creates an input stream for the file to be parsed
-        FileInputStream in = new FileInputStream("src/test/java/uml-parser-test-1/A.java");
-
-        // parse the file
-        CompilationUnit cu = JavaParser.parse(in);
-
-        // prints the resulting compilation unit to default system output
-        System.out.println(cu.toString());
-
-        // visit and print the methods names
-        new MethodVisitor().visit(cu, null);
-*/
-        //Diagram generator
-
         System.exit(1);
     }
 

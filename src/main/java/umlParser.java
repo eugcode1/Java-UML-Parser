@@ -1,16 +1,14 @@
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.*;
-import com.github.javaparser.ast.type.ReferenceType;
-import com.github.javaparser.ast.type.VoidType;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 public class umlParser {
@@ -24,35 +22,45 @@ public class umlParser {
     private List<String> classList;
     private List<String> interfaceList;
     private List<String> methodList;
-    private HashMap<String, List<String>> varList;
+    private List<String> fieldList;
 
     private HashMap<String, List<String>> c_interMap;//class map to implements interface
     private HashMap<String, List<String>> c_superMap;//class map to extends super class
+    private HashMap<String, String> useMap;
+    private HashMap<String, String> dependMap;
     private boolean class_checker = false;
+    private static String class_name = "";
+    private List<String> primitives = new ArrayList<String>(Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char","string", "Byte", "Short", "Integer", "Long", "Float", "Double", "Boolean", "Char", "String"));
     private static final String spliter = ",";//splitting one relationship
     private static final String c_ini = "[";//class ini
     private static final String c_end = "]";//class end
     private static final String c_interface = "<<interface>>";//interface
 
     public umlParser(){
-        this.filePath = "src/test/java/uml-parser-test-2";
+        this.filePath = "src/test/java/uml-parser-test-1";
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
         this.outputFile = "test1.png";
         this.cuList = new ArrayList<CompilationUnit>();
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
+        this.useMap = new HashMap<String, String>();
         this.c_superMap = new HashMap<String, List<String>>();
         this.c_interMap = new HashMap<String, List<String>>();
-
-        //umlURL.append("\"[A%7C-x:int;-y:int(*)]1-0..*[B],[A]-1[C],[A]-*[D]\"");
-        ImgGenerator sample = new ImgGenerator(umlURL.toString());
     }
     public void parse(){
         try {
             for(File file:fileList){
                 if(file.isFile()){
+                    //add spliter',' to next class or interface
+//                    if (umlURL.length() > 0 && (umlURL.charAt(umlURL.length() - 1) != ',')) {
+//                        umlURL.append(",");
+//                    }
+                    umlURL.append("[");
+                    //every cu has following list
                     methodList = new ArrayList<String>();
+                    fieldList = new ArrayList<String>();
+                    ///System.out.println(methodList);
                     // creates an input stream for the file to be parsed
                     FileInputStream in = new FileInputStream(filePath + "/" + file.getName());
                     CompilationUnit cu = JavaParser.parse(in);
@@ -60,8 +68,32 @@ public class umlParser {
                     cuList.add(cu);
                     buildClassInterfaceList(cu);
                     buildContents(cu);
+
+                    ////????
+                    if (fieldList.size() > 0) {
+                        umlURL.append("|");
+                        for (int i = 0; i < fieldList.size(); i++) {
+                            if (i != fieldList.size() - 1)
+                                umlURL.append(fieldList.get(i) + ";");
+                            else
+                                umlURL.append(fieldList.get(i));
+                        }
+                    }
+
+                    if (methodList.size() > 0) {
+                        umlURL.append("|");
+                        for (int i = 0; i < methodList.size(); i++) {
+                            umlURL.append(methodList.get(i) + ";");
+                        }
+                    }
+                    umlURL.append("]");
+                    umlURL.append(",");
                 }
             }
+            buildUrl();
+//            System.out.println(umlURL);
+//            System.out.println(">>>>>>>>>>>");
+            ImgGenerator outputImg = new ImgGenerator(umlURL.toString());
         }catch(Exception e) {
             System.out.println(e);
         }
@@ -75,10 +107,16 @@ public class umlParser {
                 ClassOrInterfaceDeclaration dec_checker = (ClassOrInterfaceDeclaration) c;
                 //build interface list
                 if(dec_checker.isInterface()){
+                    umlURL.append("<<Interface>>;");
+                    umlURL.append(dec_checker.getName().toString());
+
                     class_checker = false;
                     interfaceList.add(dec_checker.getName().toString());
                 }else{//build class list
+                    umlURL.append(dec_checker.getName().toString());
+
                     class_checker = true;
+                    class_name = dec_checker.getName().toString();
                     classList.add(dec_checker.getName().toString());
                     //class extends superclass
                     List<String> extendsList = new ArrayList<String>();
@@ -99,21 +137,13 @@ public class umlParser {
                 }
             }
         }
-        //System.out.println(interfaceList);
-        //System.out.println(">>>>>>>>>>");
     }
 
     //Build class contents
     public void buildContents(Node child){
         //check looping
             if(child instanceof FieldDeclaration){
-                FieldDeclaration field = (FieldDeclaration) child;
-                String accessMod = "";
-                if(field.isPrivate()){
-                    accessMod = "-";
-                }else if(field.isPublic()){
-                    accessMod = "+";
-                }
+                buildField(child);
             }else if(child instanceof MethodDeclaration){
                 if(class_checker) {
                     buildMethods(child);
@@ -122,19 +152,66 @@ public class umlParser {
 
             }
             for (Node n : child.getChildNodes()){
-                //System.out.println(n);
                 buildContents(n);
             }
     }
 
+    //Build class contents - fields
+    public void buildField(Node node){
+        FieldDeclaration field = (FieldDeclaration) node;
+        StringBuilder field_str = new StringBuilder();
+        String field_type = "";
+        String alia_type = "";//handle arrays case
+        String field_name = "";
+        String accessMod = "";
+        boolean access_checker = false;//skip protected
+
+        if(field.isPrivate()){
+            accessMod = "-";
+            access_checker = true;
+        }else if(field.isPublic()){
+            accessMod = "+";
+            access_checker = true;
+        }
+        field_str.append(accessMod);
+
+        if(access_checker){//if not protected type
+            //System.out.println(field);
+            field_type = field.getCommonType().toString();
+            alia_type = field_type;
+            if(field_type.contains("[]")){
+                alia_type = field_type.replace("[]","");
+                field_type = field_type.replace("[]","(*)");
+            }
+            for(VariableDeclarator var:field.getVariables()){
+                field_name = var.toString();
+                field_str.append(field_name);
+                field_str.append(":" + field_type);
+            }
+            if(field_str.toString().contains("=")){//clear up variables with initialization
+                field_str = new StringBuilder(field_str.substring(0, field_str.indexOf("=")).trim() + ";");
+            }
+
+            if(primitives.contains(alia_type)){
+                fieldList.add(field_str.toString());
+            }else{
+               // System.out.println(field_type.toString());//refClass
+                System.out.println(class_name);
+                //buildMuplicity();
+            }
+        }
+    }
+
+    //Build class contents - methods
     public void buildMethods(Node node) {
-        MethodDeclaration method = (MethodDeclaration)node;
+        //System.out.println(node);
+        MethodDeclaration method = (MethodDeclaration) node;
         StringBuilder method_str = new StringBuilder();
         String method_type = "";
         String method_name = "";
         String accessMod = "";
-
         boolean access_checker = false;
+
         if(method.isPrivate()){
             accessMod = "-";
         }else if(method.isPublic()){//static>?
@@ -144,18 +221,23 @@ public class umlParser {
         method_str.append(accessMod);
 
         if (access_checker) {//if is class
-            //System.out.println(node);
             method_type = method.getType().toString();
             method_name = method.getName().toString();
             method_str.append(method_name);
-
             method_str.append("(");
             for(Parameter para:method.getParameters()){
-                //pare is by pair like: A1 a1
+                //para is by pair like: A1 a1
                 String[] tmp = para.toString().split(" ");
                 if(tmp.length == 2) {
+                    //tmp[0] is refType tmp[1] is para
                     method_str.append(tmp[1] + ":" + tmp[0]);
                     method_str.append(",");
+                    if(interfaceList.contains(tmp[0])) {
+                        if(!useMap.containsKey(tmp[0])) {
+                            useMap.put(tmp[0], class_name);
+                        }
+                    }
+                    ///System.out.println(useMap);
                 }
             }
             if(method.getParameters().isEmpty()){
@@ -165,12 +247,35 @@ public class umlParser {
                 method_str.append(")");
             }
             method_str.append(":" + method_type);
-            System.out.println(method_str);
             if (method_name.startsWith("get") || method_name.startsWith("set")) {
                 //IGNORE
             } else {
                 methodList.add(method_str.toString());
             }
         }
+    }
+
+    //Build umlUrl
+    public void buildUrl(){
+        //append uses part
+        for(String key : useMap.keySet()) {
+            umlURL.append("[" + useMap.get(key) + "]uses -.->[<<interface>>;" + key + "],");
+        }
+        //append interfaces dependency
+        for(String key : c_interMap.keySet()){
+            List<String> list =c_interMap.get(key);
+            for(String item : list){
+                umlURL = umlURL.append("[<<interface>>;" + item + "]^-.-[" + key + "],");
+            }
+        }
+        //append superclass dependency
+        for(String key : c_superMap.keySet()){
+            List<String> list =c_superMap.get(key);
+            for(String item : list){
+                umlURL = umlURL.append("[" + item + "]^-[" + key + "],");
+            }
+        }
+        //remove last comma
+        umlURL.setLength(umlURL.length() - 1);
     }
 }
