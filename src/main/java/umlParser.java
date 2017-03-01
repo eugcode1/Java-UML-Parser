@@ -23,21 +23,17 @@ public class umlParser {
     private List<String> interfaceList;
     private List<String> methodList;
     private List<String> fieldList;
-
     private HashMap<String, List<String>> c_interMap;//class map to implements interface
     private HashMap<String, List<String>> c_superMap;//class map to extends super class
     private HashMap<String, String> useMap;
     private HashMap<String, String> dependMap;
+    private HashMap<String, String> multMap;
     private boolean class_checker = false;
     private static String class_name = "";
     private List<String> primitives = new ArrayList<String>(Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char","string", "Byte", "Short", "Integer", "Long", "Float", "Double", "Boolean", "Char", "String"));
-    private static final String spliter = ",";//splitting one relationship
-    private static final String c_ini = "[";//class ini
-    private static final String c_end = "]";//class end
-    private static final String c_interface = "<<interface>>";//interface
 
     public umlParser(){
-        this.filePath = "src/test/java/uml-parser-test-1";
+        this.filePath = "src/test/java/uml-parser-test-2";
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
         this.outputFile = "test1.png";
@@ -45,6 +41,7 @@ public class umlParser {
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
         this.useMap = new HashMap<String, String>();
+        this.multMap = new HashMap<String, String>();
         this.c_superMap = new HashMap<String, List<String>>();
         this.c_interMap = new HashMap<String, List<String>>();
     }
@@ -91,8 +88,9 @@ public class umlParser {
                 }
             }
             buildUrl();
-//            System.out.println(umlURL);
-//            System.out.println(">>>>>>>>>>>");
+            System.out.println(umlURL);
+            System.out.println(">>>>>>>>>>>");
+            //Generating Diagram
             ImgGenerator outputImg = new ImgGenerator(umlURL.toString());
         }catch(Exception e) {
             System.out.println(e);
@@ -196,8 +194,8 @@ public class umlParser {
                 fieldList.add(field_str.toString());
             }else{
                // System.out.println(field_type);//refClass
-                System.out.println(class_name);
-                //buildMuplicity(field_type);
+                //System.out.println(class_name);
+                buildMultiplicity(field_type);
             }
         }
     }
@@ -214,7 +212,7 @@ public class umlParser {
 
         if(method.isPrivate()){
             accessMod = "-";
-        }else if(method.isPublic()){//static>?
+        }else if(method.isPublic()){//static>??
             accessMod = "+";
             access_checker = true;
         }
@@ -255,12 +253,41 @@ public class umlParser {
         }
     }
 
+    //Build field multiplicity
+    public void buildMultiplicity(String field_type){
+        String r_type = field_type;//relation string
+        String r_key = "";
+        String r_val = "";
+        String r_revKey = "";
+
+        if(r_type.contains("Collection")){
+            r_val = "1-*";
+            r_type = r_type.replace("Collection<","");
+            r_type = r_type.replace(">","");
+            r_key = class_name + "~" + r_type;
+            r_revKey = r_type + "~" + class_name;
+            if(!multMap.containsKey(r_key) && !multMap.containsKey(r_revKey)){
+                multMap.put(r_key, r_val);
+            }
+        }else{
+            r_val = "1-1";
+            r_key = class_name + "~" + r_type;
+            r_revKey = r_type + "~" + class_name;
+            if(!multMap.containsKey(r_key) && !multMap.containsKey(r_revKey)){
+                multMap.put(r_key, r_val);//<c-c, relation>
+            }
+        }
+    }
+
     //Build umlUrl
     public void buildUrl(){
         //append uses part
         for(String key : useMap.keySet()) {
             umlURL.append("[" + useMap.get(key) + "]uses -.->[<<interface>>;" + key + "],");
         }
+        //append depend part
+
+
         //append interfaces dependency
         for(String key : c_interMap.keySet()){
             List<String> list =c_interMap.get(key);
@@ -275,7 +302,19 @@ public class umlParser {
                 umlURL = umlURL.append("[" + item + "]^-[" + key + "],");
             }
         }
+        //append multiplicity relation
+        for(String key: multMap.keySet()){
+            //check if class/interface type
+            String tmpClass = key.split("~")[0];
+            String tmpType = key.split("~")[1];
+            if(classList.contains(tmpType)){//??can also use interfacelist
+                umlURL.append("[" + tmpClass + "]" + multMap.get(key) + "[" + tmpType + "],");
+            }else{
+                umlURL.append("[" + tmpClass + "]" + multMap.get(key) + "[<<interface>>;" + tmpType + "],");
+            }
+        }
         //remove last comma
         umlURL.setLength(umlURL.length() - 1);
     }
+
 }
