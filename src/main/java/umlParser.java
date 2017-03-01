@@ -195,9 +195,9 @@ public class umlParser {
             if(primitives.contains(alia_type)){
                 fieldList.add(field_str.toString());
             }else{
-               // System.out.println(field_type.toString());//refClass
+               // System.out.println(field_type);//refClass
                 System.out.println(class_name);
-                //buildMuplicity();
+                //buildMuplicity(field_type);
             }
         }
     }
