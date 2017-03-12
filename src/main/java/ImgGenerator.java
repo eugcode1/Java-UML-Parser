@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class ImgGenerator {
     private static final String yuml = "https://yuml.me/diagram/scruffy/class/";  //URL of yuml
-    private static String img_location = "src/test/output.png";
+    private static String img_location = "src/test/output1.png";
 
     public ImgGenerator(String umlURL){
         try{

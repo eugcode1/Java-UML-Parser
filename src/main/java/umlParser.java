@@ -109,7 +109,7 @@ public class umlParser {
 
             }
             buildUrl();
-            System.out.println(">>>>>>>>>>>");
+  //          System.out.println(">>>>>>>>>>>");
             System.out.println(umlURL);
             //Generating Diagram
             ImgGenerator outputImg = new ImgGenerator(umlURL.toString());
