@@ -36,7 +36,7 @@ public class umlParser {
     private List<String> primitives = new ArrayList<String>(Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char","string", "Byte", "Short", "Integer", "Long", "Float", "Double", "Boolean", "Char", "String"));
 
     public umlParser(){
-        this.filePath = "src/test/java/uml-parser-test-5";
+        this.filePath = "src/test/java/uml-parser-test-1";
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
         this.outputFile = "test1.png";
@@ -254,13 +254,22 @@ public class umlParser {
                     method_str.append(tmp[1] + ":" + tmp[0]);
                     method_str.append(",");
                     if(interfaceList.contains(tmp[0])) {
-                        if(!methodMap.containsKey(tmp[0])) {
-                            methodMap.put(class_name, tmp[0]);
-                        }
+       //                 if(!methodMap.containsKey(class_name)) {
+                            methodMap.put(class_name, tmp[0]);//??might reverse for order
+         //               }
                     }
                     //??method name is main, check main dependency
                     if(method_name.equals("main")){
-                        System.out.println(method.getMetaModel());;
+                        for(Node n : method.getChildNodes()){
+                            String code = n.toString();
+                            if(code.contains("=")){
+                                for(String i : interfaceList){
+                                    if(code.contains(i)){
+                                        methodMap.put(class_name, i);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -307,9 +316,9 @@ public class umlParser {
                 constr_str.append(tmp[1] + ":" + tmp[0]);
                 constr_str.append(",");
                 if(interfaceList.contains(tmp[0])) {
-                    if(!constrMap.containsKey(tmp[0])) {
+ //                   if(!constrMap.containsKey(tmp[0])) {
                         constrMap.put(class_name, tmp[0]);
-                    }
+   //                 }
                 }
             }
         }
@@ -360,6 +369,7 @@ public class umlParser {
             umlURL.append("[" + key + "]uses -.->[<<interface>>;" + constrMap.get(key) + "],");
         }
 
+        ///Use case
         //append interfaces dependency
         for(String key : c_interMap.keySet()){
             List<String> list =c_interMap.get(key);
