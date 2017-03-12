@@ -35,11 +35,11 @@ public class umlParser {
     private static String class_name = "";
     private List<String> primitives = new ArrayList<String>(Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char","string", "Byte", "Short", "Integer", "Long", "Float", "Double", "Boolean", "Char", "String"));
 
-    public umlParser(){
-        this.filePath = "src/test/java/uml-parser-test-1";
+    public umlParser(String filePath, String outputFile){
+        this.filePath = filePath;
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
-        this.outputFile = "test1.png";
+        this.outputFile = outputFile;
         this.cuList = new ArrayList<CompilationUnit>();//??useless
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
