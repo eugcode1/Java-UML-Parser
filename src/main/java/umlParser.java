@@ -18,7 +18,7 @@ public class umlParser {
     private static File fileFolder;
     private static File[] fileList;
     private static StringBuilder umlURL = new StringBuilder();
-    private static String outputFile;
+    private static String imgPath;
     private List<CompilationUnit> cuList;
     private List<String> classList;
     private List<String> interfaceList;
@@ -35,11 +35,11 @@ public class umlParser {
     private static String class_name = "";
     private List<String> primitives = new ArrayList<String>(Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char","string", "Byte", "Short", "Integer", "Long", "Float", "Double", "Boolean", "Char", "String"));
 
-    public umlParser(String filePath, String outputFile){
+    public umlParser(String filePath, String imgPath){
         this.filePath = filePath;
+        this.imgPath = imgPath;
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
-        this.outputFile = outputFile;
         this.cuList = new ArrayList<CompilationUnit>();//??useless
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
@@ -112,7 +112,7 @@ public class umlParser {
   //          System.out.println(">>>>>>>>>>>");
             System.out.println(umlURL);
             //Generating Diagram
-            ImgGenerator outputImg = new ImgGenerator(umlURL.toString());
+            ImgGenerator outputImg = new ImgGenerator(umlURL.toString(), this.imgPath);
         }catch(Exception e) {
             System.out.println(e);
         }

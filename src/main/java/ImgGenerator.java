@@ -6,13 +6,12 @@ import java.net.URL;
 
 public class ImgGenerator {
     private static final String yuml = "https://yuml.me/diagram/scruffy/class/";  //URL of yuml
-    private static String img_location = "src/test/output1.png";
 
-    public ImgGenerator(String umlURL){
+    public ImgGenerator(String umlURL, String imgPath){
         try{
             URL url = new URL(yuml + umlURL + ".png");
             InputStream in = url.openStream();
-            OutputStream out = new FileOutputStream(img_location);
+            OutputStream out = new FileOutputStream(imgPath);
             byte[] buffer = new byte[2048];
             int length;
 
