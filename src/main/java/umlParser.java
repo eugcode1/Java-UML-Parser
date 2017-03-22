@@ -54,10 +54,7 @@ public class umlParser {
         try {
             for(File file:fileList){
                 if(file.isFile()){
-                    //add spliter',' to next class or interface
-//                    if (umlURL.length() > 0 && (umlURL.charAt(umlURL.length() - 1) != ',')) {
-//                        umlURL.append(",");
-//                    }
+                    //umlURL start here
                     umlURL.append("[");
                     //every cu has following list
                     fieldList = new ArrayList<String>();
@@ -195,7 +192,6 @@ public class umlParser {
         field_str.append(accessMod);
 
         if(access_checker){//if not protected type
-            //System.out.println(field);
             field_type = field.getCommonType().toString();
             alia_type = field_type;
             if(field_type.contains("[]")){
