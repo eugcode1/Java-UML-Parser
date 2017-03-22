@@ -19,7 +19,7 @@ public class umlParser {
     private static File[] fileList;
     private static StringBuilder umlURL = new StringBuilder();
     private static String imgPath;
-    private List<CompilationUnit> cuList;
+    //private List<CompilationUnit> cuList;
     private List<String> classList;
     private List<String> interfaceList;
     private List<String> fieldList;
@@ -40,7 +40,7 @@ public class umlParser {
         this.imgPath = imgPath;
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
-        this.cuList = new ArrayList<CompilationUnit>();//??useless
+        //this.cuList = new ArrayList<CompilationUnit>();//??useless
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
         this.methodMap = new HashMap<String, String>();
@@ -65,7 +65,7 @@ public class umlParser {
                     FileInputStream in = new FileInputStream(filePath + "/" + file.getName());
                     CompilationUnit cu = JavaParser.parse(in);
                     in.close();
-                    cuList.add(cu);
+                    //cuList.add(cu);
                     buildClassInterfaceList(cu);
                     buildContents(cu);
 
@@ -221,8 +221,6 @@ public class umlParser {
         //System.out.println(node);
         MethodDeclaration method = (MethodDeclaration) node;
         StringBuilder method_str = new StringBuilder();
-        String method_type = "";
-        String method_name = "";
         String accessMod = "";
         boolean access_checker = false;
 
@@ -235,8 +233,8 @@ public class umlParser {
         method_str.append(accessMod);
 
         if (access_checker) {//if public method
-            method_type = method.getType().toString();
-            method_name = method.getName().toString();
+            String method_type = method.getType().toString();
+            String method_name = method.getName().toString();
             method_str.append(method_name);
             method_str.append("(");
             for(Parameter para : method.getParameters()){
@@ -276,7 +274,7 @@ public class umlParser {
                 method_str.append(")");
             }
             method_str.append(":" + method_type);
-
+            //check set & get method to add variable to method list
             if (method_name.startsWith("get") || method_name.startsWith("set")) {
                 //not adding set/get method to list
                 if(accessMod == "+") {//only process public methods
