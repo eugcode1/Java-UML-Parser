@@ -282,9 +282,9 @@ public class umlParser {
                     if(!setgetMap.containsKey(class_name)) {
                         setgetMap.put(class_name, new ArrayList<String>());
                     }
-                    if(!setgetMap.get(class_name).contains(var)) {
-                        setgetMap.get(class_name).add(var);
-                    }
+//                    if(!setgetMap.get(class_name).contains(var)) {
+//                        setgetMap.get(class_name).add(var);
+//                    }
                 }
             } else {
                 methodList.add(method_str.toString());

@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        umlParser obj = new umlParser("src/test/java/uml-parser-test-2", "src/test/output.png");
+        umlParser obj = new umlParser("src/test/java/uml-parser-test-3", "src/test/output.png");
         obj.parse();
         System.exit(1);
     }
