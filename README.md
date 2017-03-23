@@ -2,9 +2,10 @@
 Java UML Parser
 
 Goal:
-Integrate Java code using java parser to uml diagram using yUML.
+Convert Java code using java parser to uml diagram using yUML.
 
 Libraries/API
 Java Parser: https://github.com/javaparser/javaparser
+yUML: https://yuml.me/
 
 
