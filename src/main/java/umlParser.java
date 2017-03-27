@@ -331,22 +331,30 @@ public class umlParser {
         String r_key = "";
         String r_val = "";
         String r_revKey = "";
-        System.out.println(class_name + "~" + r_type);
+
         if(r_type.contains("Collection")){
-            r_val = "1-*";
+            r_val = "-*";
             r_type = r_type.replace("Collection<","");
             r_type = r_type.replace(">","");
             r_key = class_name + "~" + r_type;
             r_revKey = r_type + "~" + class_name;
             if(!multMap.containsKey(r_key) && !multMap.containsKey(r_revKey)){
                 multMap.put(r_key, r_val);
+            }else if(multMap.containsKey(r_revKey)){
+                StringBuilder str = new StringBuilder(multMap.get(r_revKey));
+                str.insert(0,'*');
+                multMap.put(r_revKey, str.toString());
             }
         }else{
-            r_val = "1-1";//bug for testcase 5, extra1
+            r_val = "-1";//bug for testcase 5, extra1
             r_key = class_name + "~" + r_type;
             r_revKey = r_type + "~" + class_name;
             if(!multMap.containsKey(r_key) && !multMap.containsKey(r_revKey)){
                 multMap.put(r_key, r_val);//<c-c, relation>
+            }else if(multMap.containsKey(r_revKey)){
+                StringBuilder str = new StringBuilder(multMap.get(r_revKey));
+                str.insert(0,'1');
+                multMap.put(r_revKey, str.toString());
             }
         }
     }
