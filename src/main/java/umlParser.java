@@ -282,9 +282,9 @@ public class umlParser {
                     if(!setgetMap.containsKey(class_name)) {
                         setgetMap.put(class_name, new ArrayList<String>());
                     }
-//                    if(!setgetMap.get(class_name).contains(var)) {
-//                        setgetMap.get(class_name).add(var);
-//                    }
+                    if(!setgetMap.get(class_name).contains(var)) {
+                        setgetMap.get(class_name).add(var);
+                    }
                 }
             } else {
                 methodList.add(method_str.toString());
@@ -331,7 +331,7 @@ public class umlParser {
         String r_key = "";
         String r_val = "";
         String r_revKey = "";
-
+        System.out.println(class_name + "~" + r_type);
         if(r_type.contains("Collection")){
             r_val = "1-*";
             r_type = r_type.replace("Collection<","");
@@ -342,7 +342,7 @@ public class umlParser {
                 multMap.put(r_key, r_val);
             }
         }else{
-            r_val = "1-1";
+            r_val = "1-1";//bug for testcase 5, extra1
             r_key = class_name + "~" + r_type;
             r_revKey = r_type + "~" + class_name;
             if(!multMap.containsKey(r_key) && !multMap.containsKey(r_revKey)){
@@ -385,7 +385,7 @@ public class umlParser {
             String tmpType = key.split("~")[1];
             if(classList.contains(tmpType)){//??can also use interfacelist
                 umlURL.append("[" + tmpClass + "]" + multMap.get(key) + "[" + tmpType + "],");
-            }else{
+            }else {
                 umlURL.append("[" + tmpClass + "]" + multMap.get(key) + "[<<interface>>;" + tmpType + "],");
             }
         }
