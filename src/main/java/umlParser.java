@@ -242,7 +242,7 @@ public class umlParser {
                 String[] tmp = para.toString().split(" ");
                 if(tmp.length == 2) {
                     //tmp[0] is refType tmp[1] is para
-                    if(tmp[0].contains("[]")){
+                    if(tmp[0].contains("[]")){//yuml does not support String[] as return tyoe
                         tmp[0] = tmp[0].replace("[]","");
                     }
                     method_str.append(tmp[1] + ":" + tmp[0]);
