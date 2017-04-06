@@ -13,6 +13,12 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
+        String origin = scanner.next();
+        if (origin.length() == 0)
+        {
+            System.out.println("Invalid input, re-enter the testcase");
+            origin = scanner.next();
+        }
         umlParser obj = new umlParser("src/test/java/uml-parser-test-3", "src/test/output3.png");
         obj.parse();
         System.exit(1);
