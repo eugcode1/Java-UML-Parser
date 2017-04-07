@@ -19,7 +19,6 @@ public class umlParser {
     private static File[] fileList;
     private static StringBuilder umlURL = new StringBuilder();
     private static String imgPath;
-    //private List<CompilationUnit> cuList;
     private List<String> classList;
     private List<String> interfaceList;
     private List<String> fieldList;
@@ -65,7 +64,6 @@ public class umlParser {
                     FileInputStream in = new FileInputStream(filePath + "/" + file.getName());
                     CompilationUnit cu = JavaParser.parse(in);
                     in.close();
-                    //cuList.add(cu);
                     buildClassInterfaceList(cu);
                     buildContents(cu);
 
@@ -98,7 +96,6 @@ public class umlParser {
                     }
 //                    if(umlURL.indexOf("String[]") > 0){
 //                        System.out.println(methodList);
-//                        System.out.println("!!!");
 //                    }
                     umlURL.append("]");
                     umlURL.append(",");
