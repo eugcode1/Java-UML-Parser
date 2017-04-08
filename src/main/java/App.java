@@ -12,13 +12,15 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        if (args.length == 0)
+        if (args.length != 0)
         {
-            System.out.println("Invalid input, re-enter the testcase");
-        }
-            umlParser obj = new umlParser("src/test/java/uml-parser-test-3", "src/test/output3.png");
-            obj.parse();
+            System.out.println("Invalid input, re-run the command");
             System.exit(1);
+        }
+        String filePath = "src/test/java/uml-parser-test-" + 3;
+        umlParser obj = new umlParser(filePath, "src/test/output3.png");
+        obj.parse();
+        System.exit(1);
 
     }
 }
