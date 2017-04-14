@@ -1,11 +1,11 @@
 # cmpe202-UML-Parser
 Java UML Parser
 
-Goal:
+###Goal:
 Convert Java code using java parser to uml diagram using yUML.
 
-Libraries/API
-Java Parser: https://github.com/javaparser/javaparser
+###Libraries/API
+Java Parser: https://github.com/javaparser/javaparser<br/>
 yUML: https://yuml.me/
 
 
