@@ -39,7 +39,6 @@ public class umlParser {
         this.imgPath = imgPath;
         this.fileFolder = new File(filePath);
         this.fileList = fileFolder.listFiles();
-        //this.cuList = new ArrayList<CompilationUnit>();//??useless
         this.classList = new ArrayList<String>();
         this.interfaceList = new ArrayList<String>();
         this.methodMap = new HashMap<String, String>();
