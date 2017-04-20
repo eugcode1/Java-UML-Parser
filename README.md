@@ -16,6 +16,6 @@ The command will take two inputs:
 2. source diagram path
 
 
-UML Limitations
+### UML Limitations
 1. Interface is not able to show method lists
 2. Function Parameter or Function Return Type does not support plural like 'String[]', it only shows 'String' in the diagram
