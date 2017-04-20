@@ -18,7 +18,7 @@ public class App {
             System.exit(1);
         }
         String filePath = "src/test/java/uml-parser-test-" + 4;
-        String outputPath = "src/test/output.png";
+        String outputPath = "src/test/output4.png";
         umlParser obj = new umlParser(filePath, outputPath);
         obj.parse();
         System.exit(1);
