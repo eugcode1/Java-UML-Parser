@@ -17,8 +17,8 @@ public class App {
             System.out.println("Invalid input, re-run the command");
             System.exit(1);
         }
-        String filePath = "src/test/java/uml-parser-test-" + 4;
-        String outputPath = "src/test/output4.png";
+        String filePath = "src/test/java/uml-parser-test-" + 5;
+        String outputPath = "src/test/output.png";
         umlParser obj = new umlParser(filePath, outputPath);
         obj.parse();
         System.exit(1);
