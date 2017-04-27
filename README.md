@@ -10,6 +10,7 @@ yUML: https://yuml.me/
 
 ### Instruction
 I will export jar file.
+The 281 partner will take the jar to run on AWS and export in the webpage
 
 The command will take two inputs:
 1. testcase path
