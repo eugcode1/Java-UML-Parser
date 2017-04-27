@@ -14,7 +14,7 @@ I will export jar file.
 The command will take two inputs:
 1. testcase path
 2. source diagram path
-
+example: umlparser testcase1 output1
 
 ### UML Limitations
 1. Interface is not able to show method lists
