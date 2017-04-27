@@ -93,9 +93,6 @@ public class umlParser {
                                 umlURL.append(constrList.get(i));//??last colon not affect actually
                         }
                     }
-//                    if(umlURL.indexOf("String[]") > 0){
-//                        System.out.println(methodList);
-//                    }
                     umlURL.append("]");
                     umlURL.append(",");
                 }
