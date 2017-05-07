@@ -240,11 +240,9 @@ public class umlParser {
                     method_str.append(tmp[1] + ":" + tmp[0]);
                     method_str.append(",");
                     if(interfaceList.contains(tmp[0])) {
-       //                 if(!methodMap.containsKey(class_name)) {
-                            methodMap.put(class_name, tmp[0]);//??might reverse for order
-         //               }
+                            methodMap.put(class_name, tmp[0]);
+
                     }
-                    //??method name is main, check main dependency
                     if(method_name.equals("main")){
                         for(Node n : method.getChildNodes()){
                             String code = n.toString();
