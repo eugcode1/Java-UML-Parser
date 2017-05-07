@@ -10,6 +10,7 @@ Create a program to convert Java code into uml diagram
 
 ### Tools Used
  - IntelliJ IDEA Community Edition: IDE for development, testing, and production of project.
+ - Eclipse Neon: IDE used for exporting project as executable jar file.
 
 ### Instruction
 1. Download the umlparser.jar under root directory
