@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 public class ImgGenerator {
-    private static final String yuml = "https://yuml.me/diagram/scruffy/class/";  //URL of yuml
+    private static final String yuml = "https://yuml.me/diagram/scruffy/class/";  //URL for yuml
 
     public ImgGenerator(String umlURL, String imgPath){
         try{
