@@ -300,9 +300,7 @@ public class umlParser {
                 constr_str.append(tmp[1] + ":" + tmp[0]);
                 constr_str.append(",");
                 if(interfaceList.contains(tmp[0])) {
- //                   if(!constrMap.containsKey(tmp[0])) {
-                        constrMap.put(class_name, tmp[0]);
-   //                 }
+                    constrMap.put(class_name, tmp[0]);
                 }
             }
         }
