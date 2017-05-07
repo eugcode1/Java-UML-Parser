@@ -12,13 +12,8 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        if (args.length != 0)
-        {
-            System.out.println("Invalid input, re-run the command");
-            System.exit(1);
-        }
-        String filePath = "src/test/java/uml-parser-test-" + 5;
-        String outputPath = "src/test/output5.png";
+        String filePath = args[0];
+        String outputPath = args[1];
         umlParser obj = new umlParser(filePath, outputPath);
         obj.parse();
         System.exit(1);

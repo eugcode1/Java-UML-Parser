@@ -51,7 +51,7 @@ public class umlParser {
     public void parse(){
         try {
             for(File file:fileList){
-                if(file.isFile()){
+                if(file.isFile()&&file.getName().toLowerCase().endsWith(".java")){
                     //umlURL start here
                     umlURL.append("[");
                     //every cu has following list
