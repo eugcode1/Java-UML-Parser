@@ -5,22 +5,22 @@ Java UML Parser
 Create a program to convert Java code into uml diagram
 
 ### Libraries/API Used
-Java Parser: https://github.com/javaparser/javaparser<br/>
-yUML: https://yuml.me/
+ - JavaParser library: library used to parse java source code into Abstract Syntax Tree. Reference site: https://github.com/javaparser/javaparser
+ - yUML: an online tool for generating UML class diagram. Reference site: https://yuml.me
+
+### Tools Used
+ - IntelliJ IDEA Community Edition: IDE for development, testing, and production of project.
 
 ### Instruction
-I will export jar file.
-The 281 partner will take the jar to run on AWS and export in the webpage
+1. Download the umlparser.jar under root directory
+2. Open a terminal session and navigate to the directory where the jar is located
+3. Run the command in the following format:
 
-The command will take two inputs:
-1. testcase path
-2. source diagram path
-example: umlparser testcase1 output1
+    example: java -jar umlparser.jar testcase1\ output1.png
 
-### Development Process
-1. I use java parser library to parse java source code into compilation unit lists.
-2. For each compilation unit, I am able to tell its property(eg: function, class, variable)
-3.
+    The command will take two inputs:
+    1. testcase path
+    2. output diagram path
 
 ### UML Limitations
 1. Interface is not able to show method lists
